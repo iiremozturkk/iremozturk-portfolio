@@ -1,7 +1,25 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
+/* Light Mode Variables */
 :root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #f8fafc;
+  --card-foreground: #0a0a0a;
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #6d28d9;
+  --radius: 0.75rem;
+}
+
+/* Dark Mode Variables */
+.dark {
   --background: #0a0a0a;
   --foreground: #ffffff;
   --card: #13111c;
@@ -17,8 +35,10 @@
   --border: #2a2640;
   --input: #1a1a1a;
   --ring: #7c3aed;
-  --radius: 0.75rem;
 }
+
+@import "tailwindcss";
+@import "tw-animate-css";
 
 /* Tailwind v4 için doğru theme tanımı */
 @theme {
@@ -61,7 +81,7 @@
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background: radial-gradient(ellipse at top, #0f0c1a 0%, #0a0a0a 70%);
+    background: var(--color-background);
   }
   
   html {
@@ -79,14 +99,24 @@
   animation: gradient-shift 8s ease infinite;
 }
 
-/* Card gradient efekti */
-.card-gradient {
+/* Card gradient efekti - Dark mode için */
+.dark .card-gradient {
   background: linear-gradient(145deg, #13111c 0%, #1a1726 100%);
   border: 1px solid rgba(109, 40, 217, 0.15);
   box-shadow: 
     0 4px 6px -1px rgba(0, 0, 0, 0.3),
     0 2px 4px -1px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Light mode için card gradient */
+.card-gradient {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(109, 40, 217, 0.1);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 /* Button gradient */
@@ -101,20 +131,31 @@
   box-shadow: 0 10px 25px rgba(109, 40, 217, 0.3);
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Dark mode */
+.dark ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+  border-left: 1px solid #2a2640;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #6d28d9, #7c3aed);
+  border: 2px solid #0a0a0a;
+}
+
+/* Light mode scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
-  border-left: 1px solid #2a2640;
+  background: #f8fafc;
+  border-left: 1px solid #e2e8f0;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #6d28d9, #7c3aed);
   border-radius: 5px;
-  border: 2px solid #0a0a0a;
+  border: 2px solid #f8fafc;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -124,7 +165,7 @@
 /* Selection */
 ::selection {
   background-color: rgba(109, 40, 217, 0.4);
-  color: #ffffff;
+  color: var(--color-foreground);
 }
 
 /* Animations */

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import ThemeProvider from "./components/theme-provider" // BU SATIRI EKLE
 import "./globals.css"
 
 const inter = Inter({ 
@@ -28,25 +29,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="tr" className="dark">
+    <html lang="tr" suppressHydrationWarning> {/* className="dark" kaldır, suppressHydrationWarning ekle */}
       <head>
-        {/* Favicon'ları kaldır veya public/ klasörüne ekle */}
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body 
-        className={`
-          ${inter.className} 
-          ${jetbrainsMono.variable}
-          antialiased
-          bg-background 
-          text-foreground
-        `}
+        className={`${inter.className} ${jetbrainsMono.variable} antialiased`} // bg-background text-foreground kaldır
         style={{
           fontFamily: `var(--font-inter), system-ui, -apple-system, sans-serif`
         }}
       >
-        {children}
-        <Analytics />
+        <ThemeProvider> {/* BU SATIRI EKLE */}
+          {children}
+          <Analytics />
+        </ThemeProvider> {/* BU SATIRI EKLE */}
       </body>
     </html>
   )

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Download } from "lucide-react"
+import { Menu, X, Download, Moon, Sun } from "lucide-react" // Moon ve Sun ekle
+import { useTheme } from "./theme-provider" // Bu satırı ekle
 
 const navItems = [
   { name: "About", id: "about" },
@@ -16,6 +17,9 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
+  
+  // Theme hook'unu ekle
+  const { theme, toggleTheme } = useTheme()
 
   // Scroll takibi
   useEffect(() => {
@@ -89,7 +93,7 @@ export default function Navigation() {
         </motion.button>
 
         {/* Desktop Navigation */}
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-center gap-4 md:flex">
           {navItems.map((item, index) => (
             <motion.li
               key={item.id}
@@ -113,10 +117,29 @@ export default function Navigation() {
             </motion.li>
           ))}
           
+          {/* Theme Toggle Button - Desktop */}
           <motion.li 
             initial={{ opacity: 0, y: -20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ delay: 0.5 }}
+          >
+            <button
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/50 text-foreground transition-all hover:border-primary hover:bg-primary/10"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </button>
+          </motion.li>
+          
+          <motion.li 
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.6 }}
           >
             <button
               onClick={handleDownloadCV}
@@ -180,7 +203,7 @@ export default function Navigation() {
               className="fixed left-0 right-0 top-16 z-40 bg-background/95 backdrop-blur-xl border-b border-border md:hidden"
             >
               <div className="mx-auto max-w-6xl px-6 py-4">
-                <ul className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-3">
                   {navItems.map((item) => (
                     <motion.li
                       key={item.id}
@@ -202,12 +225,40 @@ export default function Navigation() {
                     </motion.li>
                   ))}
                   
+                  {/* Theme Toggle Button - Mobile */}
+                  <motion.li
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -20, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, delay: 0.05 }}
+                  >
+                    <button
+                      onClick={() => {
+                        toggleTheme()
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-card/50 px-6 py-3 text-base font-medium text-foreground transition-all hover:border-primary hover:bg-primary/10"
+                    >
+                      {theme === "dark" ? (
+                        <>
+                          <Sun className="h-4 w-4" />
+                          Light Mode
+                        </>
+                      ) : (
+                        <>
+                          <Moon className="h-4 w-4" />
+                          Dark Mode
+                        </>
+                      )}
+                    </button>
+                  </motion.li>
+                  
                   <motion.li
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: -20, opacity: 0 }}
                     transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
-                    className="mt-4"
+                    className="mt-2"
                   >
                     <button
                       onClick={() => {

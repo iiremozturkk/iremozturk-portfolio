@@ -880,6 +880,10 @@
     animation: var(--animate-pulse);
   }
 
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
   .resize-none {
     resize: none;
   }

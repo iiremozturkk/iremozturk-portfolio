@@ -2396,6 +2396,21 @@ function Navigation() {
     const handleDownloadCV = ()=>{
         window.open("/irem-ozturk-cv.pdf", "_blank");
     };
+    // YENİ: Tüm navigasyon için ortak click handler
+    const handleNavClick = (href)=>{
+        // Mobil menüyü kapat
+        setIsMobileMenuOpen(false);
+        // Hash'ten ID'yi çıkar (#about -> about)
+        const id = href.replace("#", "");
+        const element = document.getElementById(id);
+        if (element) {
+            // Smooth scroll
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].header, {
         initial: {
             y: -100
@@ -2410,6 +2425,13 @@ function Navigation() {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].a, {
                         href: "#",
+                        onClick: (e)=>{
+                            e.preventDefault();
+                            window.scrollTo({
+                                top: 0,
+                                behavior: "smooth"
+                            });
+                        },
                         className: "font-mono text-xl font-bold text-primary",
                         whileHover: {
                             scale: 1.05
@@ -2420,7 +2442,7 @@ function Navigation() {
                         children: "<İÖ />"
                     }, void 0, false, {
                         fileName: "[project]/app/components/navigation.tsx",
-                        lineNumber: 40,
+                        lineNumber: 58,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -2440,25 +2462,29 @@ function Navigation() {
                                     },
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                         href: item.href,
-                                        className: "relative text-sm text-muted-foreground transition-colors hover:text-foreground",
+                                        onClick: (e)=>{
+                                            e.preventDefault();
+                                            handleNavClick(item.href);
+                                        },
+                                        className: "relative text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer",
                                         children: [
                                             item.name,
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 className: "absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 hover:w-full"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/navigation.tsx",
-                                                lineNumber: 63,
+                                                lineNumber: 89,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/navigation.tsx",
-                                        lineNumber: 58,
+                                        lineNumber: 80,
                                         columnNumber: 15
                                     }, this)
                                 }, item.name, false, {
                                     fileName: "[project]/app/components/navigation.tsx",
-                                    lineNumber: 52,
+                                    lineNumber: 74,
                                     columnNumber: 13
                                 }, this)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].li, {
@@ -2481,25 +2507,25 @@ function Navigation() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/navigation.tsx",
-                                            lineNumber: 72,
+                                            lineNumber: 98,
                                             columnNumber: 15
                                         }, this),
                                         "Download CV"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/navigation.tsx",
-                                    lineNumber: 68,
+                                    lineNumber: 94,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/navigation.tsx",
-                                lineNumber: 67,
+                                lineNumber: 93,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/navigation.tsx",
-                        lineNumber: 50,
+                        lineNumber: 72,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2510,24 +2536,24 @@ function Navigation() {
                             size: 24
                         }, void 0, false, {
                             fileName: "[project]/app/components/navigation.tsx",
-                            lineNumber: 84,
+                            lineNumber: 110,
                             columnNumber: 31
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                             size: 24
                         }, void 0, false, {
                             fileName: "[project]/app/components/navigation.tsx",
-                            lineNumber: 84,
+                            lineNumber: 110,
                             columnNumber: 49
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/navigation.tsx",
-                        lineNumber: 79,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/navigation.tsx",
-                lineNumber: 39,
+                lineNumber: 57,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2551,17 +2577,20 @@ function Navigation() {
                             navItems.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                         href: item.href,
-                                        className: "text-lg text-muted-foreground transition-colors hover:text-foreground",
-                                        onClick: ()=>setIsMobileMenuOpen(false),
+                                        onClick: (e)=>{
+                                            e.preventDefault();
+                                            handleNavClick(item.href);
+                                        },
+                                        className: "text-lg text-muted-foreground transition-colors hover:text-foreground cursor-pointer",
                                         children: item.name
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/navigation.tsx",
-                                        lineNumber: 100,
+                                        lineNumber: 126,
                                         columnNumber: 19
                                     }, this)
                                 }, item.name, false, {
                                     fileName: "[project]/app/components/navigation.tsx",
-                                    lineNumber: 99,
+                                    lineNumber: 125,
                                     columnNumber: 17
                                 }, this)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -2576,41 +2605,41 @@ function Navigation() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/navigation.tsx",
-                                            lineNumber: 117,
+                                            lineNumber: 146,
                                             columnNumber: 19
                                         }, this),
                                         "Download CV"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/navigation.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 139,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/navigation.tsx",
-                                lineNumber: 109,
+                                lineNumber: 138,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/navigation.tsx",
-                        lineNumber: 97,
+                        lineNumber: 123,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/navigation.tsx",
-                    lineNumber: 91,
+                    lineNumber: 117,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/navigation.tsx",
-                lineNumber: 89,
+                lineNumber: 115,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/navigation.tsx",
-        lineNumber: 32,
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 }
