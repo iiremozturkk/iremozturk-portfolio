@@ -12,7 +12,7 @@ export default function About() {
   const stats = [
     { label: "Double Major", value: "2", icon: GraduationCap },
     { label: "Internship", value: "1", icon: Briefcase },
-    { label: "Languages", value: "4+", icon: Sparkles },
+    { label: "Languages", value: "4", icon: Sparkles },
   ]
 
   const techStack = [
