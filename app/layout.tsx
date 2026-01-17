@@ -1,19 +1,19 @@
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import ThemeProvider from "./components/theme-provider" // BU SATIRI EKLE
+import ThemeProvider from "./components/theme-provider"
 import "./globals.css"
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap"
+  display: "swap",
 })
 
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ["latin"], 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
   variable: "--font-jetbrains",
-  display: "swap"
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -29,20 +29,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning> {/* className="dark" kaldır, suppressHydrationWarning ekle */}
+    <html lang="tr" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body 
-        className={`${inter.className} ${jetbrainsMono.variable} antialiased`} // bg-background text-foreground kaldır
-        style={{
-          fontFamily: `var(--font-inter), system-ui, -apple-system, sans-serif`
-        }}
-      >
-        <ThemeProvider> {/* BU SATIRI EKLE */}
+      <body className={`${inter.className} ${jetbrainsMono.variable} antialiased`}>
+        <ThemeProvider>
           {children}
           <Analytics />
-        </ThemeProvider> {/* BU SATIRI EKLE */}
+        </ThemeProvider>
       </body>
     </html>
   )
