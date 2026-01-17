@@ -28,6 +28,24 @@ export default function Navigation() {
     window.open("/irem-ozturk-cv.pdf", "_blank")
   }
 
+  // YENİ: Tüm navigasyon için ortak click handler
+  const handleNavClick = (href: string) => {
+    // Mobil menüyü kapat
+    setIsMobileMenuOpen(false)
+    
+    // Hash'ten ID'yi çıkar (#about -> about)
+    const id = href.replace("#", "")
+    const element = document.getElementById(id)
+    
+    if (element) {
+      // Smooth scroll
+      element.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      })
+    }
+  }
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -39,6 +57,10 @@ export default function Navigation() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <motion.a
           href="#"
+          onClick={(e) => {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
           className="font-mono text-xl font-bold text-primary"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -46,7 +68,7 @@ export default function Navigation() {
           {"<İÖ />"}
         </motion.a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - GÜNCELLENDİ */}
         <ul className="hidden items-center gap-8 md:flex">
           {navItems.map((item, index) => (
             <motion.li
@@ -57,7 +79,11 @@ export default function Navigation() {
             >
               <a
                 href={item.href}
-                className="relative text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick(item.href)
+                }}
+                className="relative text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 hover:w-full" />
@@ -85,7 +111,7 @@ export default function Navigation() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - GÜNCELLENDİ */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -99,8 +125,11 @@ export default function Navigation() {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className="text-lg text-muted-foreground transition-colors hover:text-foreground"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleNavClick(item.href)
+                    }}
+                    className="text-lg text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
                   >
                     {item.name}
                   </a>
