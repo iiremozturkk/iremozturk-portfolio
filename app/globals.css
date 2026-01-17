@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --card: #13111c;
+  --card-foreground: #f0f0f0;
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+  --secondary: #1e1b2e;
+  --secondary-foreground: #d4d4d8;
+  --muted: #16151e;
+  --muted-foreground: #a1a1aa;
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+  --border: #2a2640;
+  --input: #1a1a1a;
+  --ring: #7c3aed;
+  --radius: 0.75rem;
+}
+
+/* Tailwind v4 için doğru theme tanımı */
+@theme {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 0.2rem);
+  --radius-md: calc(var(--radius) - 0.1rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.4rem);
+  --radius-2xl: calc(var(--radius) + 0.8rem);
+  
+  /* Fonts */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background: radial-gradient(ellipse at top, #0f0c1a 0%, #0a0a0a 70%);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Card gradient efekti */
+.card-gradient {
+  background: linear-gradient(145deg, #13111c 0%, #1a1726 100%);
+  border: 1px solid rgba(109, 40, 217, 0.15);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Button gradient */
+.btn-gradient {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.3);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+  border-left: 1px solid #2a2640;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #6d28d9, #7c3aed);
+  border-radius: 5px;
+  border: 2px solid #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #7c3aed, #8b5cf6);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(109, 40, 217, 0.4);
+  color: #ffffff;
+}
+
+/* Animations */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Glow efekti */
+.glow {
+  box-shadow: 0 0 20px rgba(109, 40, 217, 0.2);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 30px rgba(109, 40, 217, 0.3);
+}
+
+/* Modern border */
+.border-modern {
+  border: 1px solid;
+  border-image: linear-gradient(90deg, transparent, rgba(109, 40, 217, 0.5), transparent) 1;
+}
