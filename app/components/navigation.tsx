@@ -1,26 +1,42 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Download } from "lucide-react"
 
 const navItems = [
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
+  { name: "About", id: "about" },
+  { name: "Skills", id: "skills" },
+  { name: "Experience", id: "experience" },
+  { name: "Projects", id: "projects" },
+  { name: "Contact", id: "contact" },
 ]
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("")
 
+  // Scroll takibi
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
+      
+      // Aktif section'ı belirle
+      const sections = navItems.map(item => item.id)
+      const current = sections.find(section => {
+        const element = document.getElementById(section)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          return rect.top <= 100 && rect.bottom >= 100
+        }
+        return false
+      })
+      if (current) setActiveSection(current)
     }
+
     window.addEventListener("scroll", handleScroll)
+    handleScroll() // Initial check
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -28,22 +44,29 @@ export default function Navigation() {
     window.open("/irem-ozturk-cv.pdf", "_blank")
   }
 
-  // YENİ: Tüm navigasyon için ortak click handler
-  const handleNavClick = (href: string) => {
-    // Mobil menüyü kapat
+  // Scroll fonksiyonu - GÜÇLENDİRİLMİŞ
+  const scrollToSection = (id: string) => {
     setIsMobileMenuOpen(false)
     
-    // Hash'ten ID'yi çıkar (#about -> about)
-    const id = href.replace("#", "")
-    const element = document.getElementById(id)
-    
-    if (element) {
-      // Smooth scroll
-      element.scrollIntoView({ 
-        behavior: "smooth",
-        block: "start"
-      })
-    }
+    // Biraz beklet ve sonra scroll et
+    setTimeout(() => {
+      const element = document.getElementById(id)
+      if (element) {
+        const headerOffset = 80 // Navigation yüksekliği
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        })
+      }
+    }, 100)
+  }
+
+  // Home'a scroll
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
@@ -51,104 +74,156 @@ export default function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-lg" : ""
+        isScrolled ? "bg-background/90 backdrop-blur-lg border-b border-border/50" : "bg-background/70"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <motion.a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault()
-            window.scrollTo({ top: 0, behavior: "smooth" })
-          }}
-          className="font-mono text-xl font-bold text-primary"
+        {/* Logo */}
+        <motion.button
+          onClick={scrollToTop}
+          className="font-mono text-xl font-bold text-primary cursor-pointer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           {"<İÖ />"}
-        </motion.a>
+        </motion.button>
 
-        {/* Desktop Navigation - GÜNCELLENDİ */}
-        <ul className="hidden items-center gap-8 md:flex">
+        {/* Desktop Navigation */}
+        <ul className="hidden items-center gap-6 md:flex">
           {navItems.map((item, index) => (
             <motion.li
-              key={item.name}
+              key={item.id}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <a
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleNavClick(item.href)
-                }}
-                className="relative text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+              <button
+                onClick={() => scrollToSection(item.id)}
+                className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 ${
+                  activeSection === item.id 
+                    ? "text-primary" 
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 hover:w-full" />
-              </a>
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                  activeSection === item.id ? "w-full" : "w-0 group-hover:w-full"
+                }`} />
+              </button>
             </motion.li>
           ))}
-          <motion.li initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+          
+          <motion.li 
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.5 }}
+          >
             <button
               onClick={handleDownloadCV}
-              className="flex items-center gap-2 rounded-full border border-primary bg-primary/10 px-4 py-2 text-sm text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+              className="group flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/20"
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
               Download CV
             </button>
           </motion.li>
         </ul>
 
         {/* Mobile Menu Button */}
-        <button
-          className="text-foreground md:hidden"
+        <motion.button
+          className="relative z-50 text-foreground md:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
+          whileTap={{ scale: 0.9 }}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <AnimatePresence mode="wait">
+            {isMobileMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+              >
+                <X size={24} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+              >
+                <Menu size={24} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
       </nav>
 
-      {/* Mobile Menu - GÜNCELLENDİ */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-background/95 backdrop-blur-lg md:hidden"
-          >
-            <ul className="flex flex-col items-center gap-6 py-8">
-              {navItems.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleNavClick(item.href)
-                    }}
-                    className="text-lg text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/50 md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed left-0 right-0 top-16 z-40 bg-background/95 backdrop-blur-xl border-b border-border md:hidden"
+            >
+              <div className="mx-auto max-w-6xl px-6 py-4">
+                <ul className="flex flex-col gap-4">
+                  {navItems.map((item) => (
+                    <motion.li
+                      key={item.id}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: -20, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <button
+                        onClick={() => scrollToSection(item.id)}
+                        className={`w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-all ${
+                          activeSection === item.id
+                            ? "bg-primary/10 text-primary"
+                            : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                        }`}
+                      >
+                        {item.name}
+                      </button>
+                    </motion.li>
+                  ))}
+                  
+                  <motion.li
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -20, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
+                    className="mt-4"
                   >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <button
-                  onClick={() => {
-                    handleDownloadCV()
-                    setIsMobileMenuOpen(false)
-                  }}
-                  className="flex items-center gap-2 rounded-full border border-primary bg-primary/10 px-6 py-3 text-primary transition-all hover:bg-primary hover:text-primary-foreground"
-                >
-                  <Download className="h-4 w-4" />
-                  Download CV
-                </button>
-              </li>
-            </ul>
-          </motion.div>
+                    <button
+                      onClick={() => {
+                        handleDownloadCV()
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download CV
+                    </button>
+                  </motion.li>
+                </ul>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>
