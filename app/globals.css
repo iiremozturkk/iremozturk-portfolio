@@ -1,40 +1,42 @@
 /* Light Mode Variables */
 :root {
+  --primary-hue: 260; /* Mor için hue değeri */
   --background: #ffffff;
   --foreground: #0a0a0a;
   --card: #f8fafc;
   --card-foreground: #0a0a0a;
-  --primary: #6d28d9;
+  --primary: hsl(var(--primary-hue), 73%, 53%); /* #6d28d9 */
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #0a0a0a;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #7c3aed;
+  --accent: hsl(calc(var(--primary-hue) + 10), 85%, 60%); /* #7c3aed */
   --accent-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #ffffff;
-  --ring: #6d28d9;
+  --ring: hsl(var(--primary-hue), 73%, 53%);
   --radius: 0.75rem;
 }
 
 /* Dark Mode Variables */
 .dark {
+  --primary-hue: 260; /* Mor için hue değeri */
   --background: #0a0a0a;
   --foreground: #ffffff;
   --card: #13111c;
   --card-foreground: #f0f0f0;
-  --primary: #6d28d9;
+  --primary: hsl(var(--primary-hue), 73%, 53%); /* #6d28d9 */
   --primary-foreground: #ffffff;
   --secondary: #1e1b2e;
   --secondary-foreground: #d4d4d8;
   --muted: #16151e;
   --muted-foreground: #a1a1aa;
-  --accent: #7c3aed;
+  --accent: hsl(calc(var(--primary-hue) + 10), 85%, 60%); /* #7c3aed */
   --accent-foreground: #ffffff;
   --border: #2a2640;
   --input: #1a1a1a;
-  --ring: #7c3aed;
+  --ring: hsl(calc(var(--primary-hue) + 10), 85%, 60%);
 }
 
 @import "tailwindcss";
@@ -71,17 +73,22 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition: background-color 0.5s ease, 
+                border-color 0.5s ease,
+                color 0.5s ease;
   }
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background: var(--color-background);
+    position: relative;
+    overflow-x: hidden;
   }
   
   html {
@@ -89,9 +96,125 @@
   }
 }
 
+/* Animated Background Effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
+  background: 
+    radial-gradient(circle at 20% 80%, 
+      hsl(var(--primary-hue), 70%, 60%, 0.15) 0%, 
+      transparent 50%),
+    radial-gradient(circle at 80% 20%, 
+      hsl(calc(var(--primary-hue) + 60), 70%, 60%, 0.1) 0%, 
+      transparent 50%),
+    radial-gradient(circle at 40% 40%, 
+      hsl(calc(var(--primary-hue) + 120), 70%, 60%, 0.08) 0%, 
+      transparent 50%);
+  animation: floatBackground 20s ease-in-out infinite;
+}
+
+.dark body::before {
+  opacity: 0.2;
+  background: 
+    radial-gradient(circle at 20% 80%, 
+      hsl(var(--primary-hue), 70%, 40%, 0.2) 0%, 
+      transparent 50%),
+    radial-gradient(circle at 80% 20%, 
+      hsl(calc(var(--primary-hue) + 60), 70%, 40%, 0.15) 0%, 
+      transparent 50%),
+    radial-gradient(circle at 40% 40%, 
+      hsl(calc(var(--primary-hue) + 120), 70%, 40%, 0.1) 0%, 
+      transparent 50%);
+}
+
+/* Floating particles */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background-image: 
+    radial-gradient(circle at 10% 20%, hsl(var(--primary-hue), 100%, 70%, 0.03) 2px, transparent 2px),
+    radial-gradient(circle at 30% 40%, hsl(var(--primary-hue), 100%, 70%, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 50% 60%, hsl(calc(var(--primary-hue) + 60), 100%, 70%, 0.03) 3px, transparent 3px),
+    radial-gradient(circle at 70% 80%, hsl(calc(var(--primary-hue) + 120), 100%, 70%, 0.02) 2px, transparent 2px),
+    radial-gradient(circle at 90% 10%, hsl(var(--primary-hue), 100%, 70%, 0.03) 1px, transparent 1px);
+  background-size: 300px 300px, 200px 200px, 400px 400px, 250px 250px, 150px 150px;
+  animation: floatParticles 40s linear infinite;
+}
+
+.dark body::after {
+  opacity: 0.1;
+}
+
+/* Animations */
+@keyframes floatBackground {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-10px, -10px) scale(1.02);
+  }
+  50% {
+    transform: translate(0, -20px) scale(1);
+  }
+  75% {
+    transform: translate(10px, -10px) scale(0.98);
+  }
+}
+
+@keyframes floatParticles {
+  0% {
+    background-position: 0 0, 100px 100px, 200px 200px, 300px 300px, 400px 400px;
+  }
+  100% {
+    background-position: 300px 300px, 400px 400px, 500px 500px, 600px 600px, 700px 700px;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    --primary-hue: 260; /* Mor */
+  }
+  25% {
+    --primary-hue: 280; /* Daha açık mor */
+  }
+  50% {
+    --primary-hue: 240; /* Daha koyu mor/mavi */
+  }
+  75% {
+    --primary-hue: 270; /* Pembe-mor */
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Apply auto color cycling */
+body {
+  animation: gradientShift 30s ease infinite;
+}
+
 /* Custom gradient text */
 .text-gradient {
-  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -102,7 +225,7 @@
 /* Card gradient efekti - Dark mode için */
 .dark .card-gradient {
   background: linear-gradient(145deg, #13111c 0%, #1a1726 100%);
-  border: 1px solid rgba(109, 40, 217, 0.15);
+  border: 1px solid hsla(var(--primary-hue), 73%, 53%, 0.15);
   box-shadow: 
     0 4px 6px -1px rgba(0, 0, 0, 0.3),
     0 2px 4px -1px rgba(0, 0, 0, 0.2),
@@ -112,7 +235,7 @@
 /* Light mode için card gradient */
 .card-gradient {
   background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-  border: 1px solid rgba(109, 40, 217, 0.1);
+  border: 1px solid hsla(var(--primary-hue), 73%, 53%, 0.1);
   box-shadow: 
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03),
@@ -121,14 +244,14 @@
 
 /* Button gradient */
 .btn-gradient {
-  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  background: var(--gradient-primary);
   color: white;
   transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(109, 40, 217, 0.3);
+  box-shadow: 0 10px 25px hsla(var(--primary-hue), 73%, 53%, 0.3);
 }
 
 /* Custom scrollbar - Dark mode */
@@ -138,7 +261,7 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #6d28d9, #7c3aed);
+  background: var(--gradient-primary);
   border: 2px solid #0a0a0a;
 }
 
@@ -153,42 +276,49 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #6d28d9, #7c3aed);
+  background: var(--gradient-primary);
   border-radius: 5px;
   border: 2px solid #f8fafc;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #7c3aed, #8b5cf6);
+  background: linear-gradient(to bottom, 
+    hsl(calc(var(--primary-hue) + 10), 85%, 60%), 
+    hsl(calc(var(--primary-hue) + 20), 85%, 65%)
+  );
 }
 
 /* Selection */
 ::selection {
-  background-color: rgba(109, 40, 217, 0.4);
+  background-color: hsla(var(--primary-hue), 73%, 53%, 0.4);
   color: var(--color-foreground);
-}
-
-/* Animations */
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 /* Glow efekti */
 .glow {
-  box-shadow: 0 0 20px rgba(109, 40, 217, 0.2);
+  box-shadow: 0 0 20px hsla(var(--primary-hue), 73%, 53%, 0.2);
 }
 
 .glow-hover:hover {
-  box-shadow: 0 0 30px rgba(109, 40, 217, 0.3);
+  box-shadow: 0 0 30px hsla(var(--primary-hue), 73%, 53%, 0.3);
 }
 
 /* Modern border */
 .border-modern {
   border: 1px solid;
-  border-image: linear-gradient(90deg, transparent, rgba(109, 40, 217, 0.5), transparent) 1;
+  border-image: linear-gradient(90deg, transparent, hsla(var(--primary-hue), 73%, 53%, 0.5), transparent) 1;
+}
+
+/* Pulse animation for interactive elements */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsla(var(--primary-hue), 73%, 53%, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px hsla(var(--primary-hue), 73%, 53%, 0.6);
+  }
+}
+
+.pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
